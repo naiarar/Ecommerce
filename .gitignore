@@ -42,4 +42,11 @@ testem.log
 .DS_Store
 Thumbs.db
 
+*.jpg
+*.jpeg
+*.jpe
+*.jif
+*.jfif
+*.jfi
+*.png
 
