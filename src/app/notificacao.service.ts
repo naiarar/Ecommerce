@@ -12,12 +12,10 @@ export class NotificacaoService {
   ) { }
 
   notificar(mensagem: string) {
-    console.log(this.snackBar, mensagem)
-    this.snackBar.open(mensagem,)
-    // this.snackBar.open(mensagem, "Ok", {
-    //   duration: 2000,
-    //   verticalPosition: "top",
-    //   horizontalPosition: "center"
-    // });
+    this.snackBar.open(mensagem, "Ok", {
+      duration: 2000,
+      verticalPosition: "top",
+      horizontalPosition: "center"
+    });
   }
 }
