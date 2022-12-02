@@ -1,11 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
-:root {
-    --blue: blue;
-    --gray: gray;
-    --light-gray: rgb(173, 167, 167);
-}
+
 
 /* You can add global styles to this file, and also import other style files */
 /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -150,9 +146,11 @@ table {
     --blue: #004a76;
     --green: #00A200;
     --dark-blue: #002d47;
-    --gray: rgba(88, 89, 91, 1);
+    --gray: #999b9f;
     --light-gray: rgba(232, 232, 232, 1);
     --light-gray-2: rgb(247, 247, 247);
+    --yellow: #fee262;
+    --purple: #7f12a7;
 }
 
 input,
