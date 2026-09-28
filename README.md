@@ -1,27 +1,63 @@
-# Ecommerce
+# Ecommerce 🛒
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.6.
+Loja virtual de periféricos e hardware feita em **Angular**, com catálogo, carrinho persistente e formulário de contato.
 
-## Development server
+**🔗 Demo:** https://naiarar.github.io/Ecommerce/
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+![Tela da loja](docs/screenshot.png)
 
-## Code scaffolding
+## Funcionalidades
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Catálogo de produtos com página de detalhes
+- Carrinho de compras persistido no `localStorage` (sobrevive ao recarregar a página)
+- Controle de quantidade por item, respeitando o estoque disponível
+- Notificações de feedback com Angular Material
+- Formulário de contato
+- Rotas com **lazy loading** por módulo e página 404
 
-## Build
+## Stack
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Angular 15 · TypeScript · Angular Material · Karma/Jasmine
 
-## Running unit tests
+## Arquitetura
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```
+src/app/
+├── produtos/            listagem e detalhes de produtos
+├── carrinho/            carrinho de compras
+├── contato/             formulário de contato
+├── header/ footer/      layout
+├── nao-encontrada/      página 404
+├── produtos.service.ts  catálogo
+├── carrinho.service.ts  estado do carrinho no localStorage
+└── notificacao.service.ts
+```
 
-## Running end-to-end tests
+## Como rodar
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+**Pré-requisitos:** Node 18.
 
-## Further help
+```bash
+npm install
+npm start
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Acesse `http://localhost:4200`.
+
+## Testes
+
+```bash
+npm test
+```
+
+## Deploy
+
+O build de produção é gerado na pasta `docs/` e publicado pelo GitHub Pages.
+
+```bash
+npx ng build --output-path docs --base-href /Ecommerce/
+```
+
+## Autora
+
+Feito por [Naiara Rodrigues](https://github.com/naiarar).
