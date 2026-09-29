@@ -1,40 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Route } from '@angular/router';
-import { CarrinhoService } from 'src/app/carrinho.service';
-import { NotificacaoService } from 'src/app/notificacao.service';
-import { IProduto, IProdutoCarrinho } from 'src/app/produtos';
-import { ProdutosService } from 'src/app/produtos.service';
+import { CurrencyPipe } from '@angular/common';
+import { Component, computed, inject, input, linkedSignal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+
+import { CarrinhoService } from '../../carrinho.service';
+import { NotificacaoService } from '../../notificacao.service';
+import { ProdutosService } from '../../produtos.service';
 
 @Component({
   selector: 'app-detalhes-produto',
+  imports: [CurrencyPipe, FormsModule, RouterLink],
   templateUrl: './detalhes-produto.component.html',
   styleUrls: ['./detalhes-produto.component.css']
 })
-export class DetalhesProdutoComponent implements OnInit {
-  produto: IProduto | undefined;
-  quantidade = 1;
+export class DetalhesProdutoComponent {
+  private readonly produtosService = inject(ProdutosService);
+  private readonly notificacaoService = inject(NotificacaoService);
+  private readonly carrinhoService = inject(CarrinhoService);
 
-  constructor(
-    private produtosService: ProdutosService,
-    private route: ActivatedRoute,
-    private notificacaoService: NotificacaoService,
-    private carrinhoService: CarrinhoService
-  ) { }
-
-  ngOnInit(): void {
-    const routeParams = this.route.snapshot.paramMap;
-    const produtoId = Number(routeParams.get("id"));
-    this.produto = this.produtosService.getOne(produtoId);
-  }
+  readonly id = input.required<string>();
+  readonly produto = computed(() => this.produtosService.getOne(Number(this.id())));
+  readonly disponivel = computed(() => {
+    const produto = this.produto();
+    return produto ? this.carrinhoService.disponivelParaAdicionar(produto) : 0;
+  });
+  readonly quantidade = linkedSignal(() => Math.min(1, this.disponivel()));
 
   adicionarAoCarrinho() {
+    const produto = this.produto();
 
-    this.notificacaoService.notificar("O produto foi adc ao carrinho");
-    const produto: IProdutoCarrinho = {
-      ...this.produto!,
-      quantidade: this.quantidade
+    if (!produto) {
+      return;
     }
-    this.carrinhoService.adicionarAoCarrinho(produto);
-  }
 
+    if (!this.carrinhoService.adicionarAoCarrinho(produto, this.quantidade())) {
+      this.notificacaoService.notificar(`Informe uma quantidade entre 1 e ${this.disponivel()}.`);
+      return;
+    }
+
+    this.notificacaoService.notificar('O produto foi adicionado ao carrinho.');
+  }
 }

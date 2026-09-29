@@ -1,16 +1,17 @@
 import { TestBed } from '@angular/core/testing';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { NotificacaoService } from './notificacao.service';
 
 describe('NotificacaoService', () => {
-  let service: NotificacaoService;
+  it('abre um snackbar com a mensagem', () => {
+    const open = vi.fn();
+    TestBed.configureTestingModule({
+      providers: [{ provide: MatSnackBar, useValue: { open } }]
+    });
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(NotificacaoService);
-  });
+    TestBed.inject(NotificacaoService).notificar('Olá');
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(open).toHaveBeenCalledWith('Olá', 'Ok', expect.objectContaining({ verticalPosition: 'top' }));
   });
 });

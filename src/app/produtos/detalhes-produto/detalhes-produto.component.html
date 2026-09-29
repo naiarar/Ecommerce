@@ -1,23 +1,38 @@
-<section class="product__container">
-    <div class="product-image__container">
-        <img [src]="produto?.imagem">
-    </div>
-    <div class="product-description__container">
-        <h2 class="product__name">
-            {{produto?.descricao}}
-        </h2>
-        <h3 class="product__price">
-            {{produto?.preco | currency: "BRL"}}
-        </h3>
-        <p>Estoque disponível</p>
-        <label>
-            Quantidade:
-            <input type="number" [(ngModel)]="quantidade" min="1">
-            unidades(s)
-        </label>
-        <p class="product__avaiability">
-            {{produto?.quantidadeEstoque}} unidade(s)
-        </p>
-        <button (click)="adicionarAoCarrinho()">Adicionar ao carrinho</button>
-    </div>
-</section>
+@if (produto(); as produto) {
+    <section class="product__container">
+        <div class="product-image__container">
+            <img [src]="produto.imagem" [alt]="produto.descricao">
+        </div>
+        <div class="product-description__container">
+            <h2 class="product__name">
+                {{ produto.descricao }}
+            </h2>
+            <h3 class="product__price">
+                {{ produto.preco | currency }}
+                <small>{{ produto.descricaoPreco }}</small>
+            </h3>
+
+            @if (disponivel() > 0) {
+                <p>Estoque disponível</p>
+                <label>
+                    Quantidade:
+                    <input type="number" name="quantidade" [ngModel]="quantidade()" (ngModelChange)="quantidade.set($event)"
+                        min="1" [max]="disponivel()">
+                    unidade(s)
+                </label>
+                <p class="product__availability">
+                    {{ disponivel() }} unidade(s) disponível(is)
+                </p>
+                <button type="button" (click)="adicionarAoCarrinho()">Adicionar ao carrinho</button>
+            } @else {
+                <p class="product__unavailable">Você já adicionou todo o estoque deste produto ao carrinho.</p>
+                <a routerLink="/carrinho">Ver carrinho</a>
+            }
+        </div>
+    </section>
+} @else {
+    <section class="product__not-found">
+        <h2>Produto não encontrado</h2>
+        <a routerLink="/produtos">Voltar para a loja</a>
+    </section>
+}

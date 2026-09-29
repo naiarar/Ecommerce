@@ -1,51 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+
+import { NotificacaoService } from '../notificacao.service';
 
 @Component({
   selector: 'app-contato',
+  imports: [ReactiveFormsModule, NgxMaskDirective],
+  providers: [provideNgxMask()],
   templateUrl: './contato.component.html',
   styleUrls: ['./contato.component.css']
 })
-export class ContatoComponent implements OnInit {
-  formContato = this.fb.group({
-    nome: ["", [
-      Validators.minLength(4),
-      Validators.required
-    ]],
-    assunto: ["", [
-      Validators.minLength(10),
-      Validators.required
-    ]],
-    telefone: ["", [
-      Validators.minLength(11),
-      Validators.required
-    ]],
-    email: ["", [
-      Validators.email,
-      Validators.required
-    ]],
-    mensagem: ["", [
-      Validators.minLength(20),
-      Validators.required
-    ]],
+export class ContatoComponent {
+  private readonly fb = inject(FormBuilder);
+  private readonly notificacaoService = inject(NotificacaoService);
 
-
-
+  readonly formContato = this.fb.nonNullable.group({
+    nome: ['', [Validators.required, Validators.minLength(4)]],
+    assunto: ['', [Validators.required, Validators.minLength(10)]],
+    telefone: ['', [Validators.required, Validators.minLength(11)]],
+    email: ['', [Validators.required, Validators.email]],
+    mensagem: ['', [Validators.required, Validators.minLength(20)]]
   });
 
-
-
-  constructor(
-    private fb: FormBuilder
-
-  ) { }
-  ngOnInit(): void {
-
+  exibirErro(campo: keyof ContatoComponent['formContato']['controls']): boolean {
+    const controle = this.formContato.controls[campo];
+    return controle.invalid && (controle.touched || controle.dirty);
   }
 
   enviarFormulario() {
-    alert("Mensagem enviada com sucesso!");
+    if (this.formContato.invalid) {
+      this.formContato.markAllAsTouched();
+      return;
+    }
+
+    this.notificacaoService.notificar('Mensagem enviada com sucesso!');
     this.formContato.reset();
   }
-
 }

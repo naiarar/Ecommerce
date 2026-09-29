@@ -1,0 +1,24 @@
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+import {
+  ApplicationConfig,
+  DEFAULT_CURRENCY_CODE,
+  LOCALE_ID,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection
+} from '@angular/core';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+
+import { routes } from './app.routes';
+
+registerLocaleData(localePt);
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideZonelessChangeDetection(),
+    provideRouter(routes, withComponentInputBinding(), withInMemoryScrolling({ scrollPositionRestoration: 'top' })),
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
+    { provide: DEFAULT_CURRENCY_CODE, useValue: 'BRL' }
+  ]
+};

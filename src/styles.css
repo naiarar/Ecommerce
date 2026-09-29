@@ -1,9 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
-@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "@angular/material/prebuilt-themes/azure-blue.css";
 
-
-
-/* You can add global styles to this file, and also import other style files */
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -115,7 +111,12 @@ section {
 
 body {
     line-height: 1;
-    font-family: "Open Sans", Helvetica, Arial, "sans-serif";
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    background-color: #fff;
+}
+
+img {
+    max-width: 100%;
 }
 
 ol,
@@ -147,6 +148,7 @@ table {
     --green: #00A200;
     --dark-blue: #002d47;
     --gray: #999b9f;
+    --dark-gray: #5f6166;
     --light-gray: rgba(232, 232, 232, 1);
     --light-gray-2: rgb(247, 247, 247);
     --yellow: #fee262;

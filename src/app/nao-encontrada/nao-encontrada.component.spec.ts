@@ -1,23 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { NaoEncontradaComponent } from './nao-encontrada.component';
 
 describe('NaoEncontradaComponent', () => {
-  let component: NaoEncontradaComponent;
-  let fixture: ComponentFixture<NaoEncontradaComponent>;
-
-  beforeEach(async () => {
+  it('exibe a mensagem de página não encontrada', async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NaoEncontradaComponent ]
-    })
-    .compileComponents();
+      imports: [NaoEncontradaComponent],
+      providers: [provideRouter([])]
+    }).compileComponents();
+    const fixture = TestBed.createComponent(NaoEncontradaComponent);
+    await fixture.whenStable();
 
-    fixture = TestBed.createComponent(NaoEncontradaComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain('Página não encontrada');
   });
 });
