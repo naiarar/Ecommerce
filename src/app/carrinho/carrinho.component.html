@@ -1,21 +1,32 @@
 <h2 class="cart-title">Carrinho</h2>
-<div *ngIf="itensCarrinho.length > 0; else semProduto">
+@if (carrinhoService.itens().length > 0) {
     <ul>
-        <li *ngFor="let itemCarrinho of itensCarrinho">
-            <img [src]="itemCarrinho.imagem">
-            <p>{{itemCarrinho.descricao}}</p>
-            <p>{{itemCarrinho.preco | currency: "BRL"}}</p>
-            <label>
-                Quantidade
-                <input type="number" [(ngModel)]="itemCarrinho.quantidade" (change)="calculaTotal()">
-            </label>
-            <button class="remove-button" (click)="removeProdutoCarrinho(itemCarrinho.id)"><i
-                    class="fa-solid fa-x"></i></button>
-        </li>
-
+        @for (itemCarrinho of carrinhoService.itens(); track itemCarrinho.id) {
+            <li>
+                <a [routerLink]="['/produtos', itemCarrinho.id]">
+                    <img [src]="itemCarrinho.imagem" [alt]="itemCarrinho.descricao">
+                </a>
+                <p class="cart-item__name">{{ itemCarrinho.descricao }}</p>
+                <p>{{ itemCarrinho.preco | currency }}</p>
+                <label>
+                    Quantidade
+                    <input #campoQuantidade type="number" min="1" [max]="itemCarrinho.quantidadeEstoque"
+                        [value]="itemCarrinho.quantidade"
+                        (change)="alterarQuantidade(itemCarrinho.id, campoQuantidade)">
+                </label>
+                <p class="cart-item__subtotal">{{ itemCarrinho.preco * itemCarrinho.quantidade | currency }}</p>
+                <button type="button" class="remove-button" (click)="removeProdutoCarrinho(itemCarrinho.id)"
+                    [attr.aria-label]="'Remover ' + itemCarrinho.descricao">
+                    <i class="fa-solid fa-x" aria-hidden="true"></i>
+                </button>
+            </li>
+        }
     </ul>
-    <h2 class="cart-total">Total: {{total | currency: "BRL"}}</h2>
-    <button class="buy-button" (click)="comprar()">Finalizar compra</button>
-</div>
-
-<ng-template class="vazio" #semProduto>Seu carrinho está vazio</ng-template>
+    <h2 class="cart-total">Total: {{ carrinhoService.total() | currency }}</h2>
+    <button type="button" class="buy-button" (click)="comprar()">Finalizar compra</button>
+} @else {
+    <div class="vazio">
+        <p>Seu carrinho está vazio.</p>
+        <a routerLink="/produtos">Ver produtos</a>
+    </div>
+}

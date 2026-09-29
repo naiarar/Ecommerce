@@ -5,15 +5,27 @@ import { IProduto, produtos } from './produtos';
   providedIn: 'root'
 })
 export class ProdutosService {
-  produtos: IProduto[] = produtos;
+  private readonly produtos: readonly IProduto[] = produtos;
 
-  constructor() { }
-
-  getAll() {
+  getAll(): readonly IProduto[] {
     return this.produtos;
   }
 
-  getOne(produtoId: number) {
-    return this.produtos.find(produto => produto.id == produtoId);
+  getOne(produtoId: number): IProduto | undefined {
+    return this.produtos.find(produto => produto.id === produtoId);
   }
+
+  buscar(termo?: string | null): readonly IProduto[] {
+    const termoNormalizado = normalizar(termo ?? '');
+
+    if (!termoNormalizado) {
+      return this.produtos;
+    }
+
+    return this.produtos.filter(produto => normalizar(produto.descricao).includes(termoNormalizado));
+  }
+}
+
+function normalizar(texto: string): string {
+  return texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
 }

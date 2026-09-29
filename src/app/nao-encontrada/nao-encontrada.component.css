@@ -3,11 +3,17 @@
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
+    row-gap: 20px;
     height: 400px;
+    text-align: center;
 }
-
 
 .container h2 {
     color: red;
     font-size: 44px;
+}
+
+.container a {
+    color: var(--blue);
+    font-size: 20px;
 }

@@ -1,34 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { IProduto } from '../produtos';
+import { CurrencyPipe } from '@angular/common';
+import { Component, computed, inject, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+
 import { ProdutosService } from '../produtos.service';
 
 @Component({
   selector: 'app-produtos',
+  imports: [CurrencyPipe, RouterLink],
   templateUrl: './produtos.component.html',
   styleUrls: ['./produtos.component.css']
 })
-export class ProdutosComponent implements OnInit {
-  produtos: IProduto[] | undefined;
+export class ProdutosComponent {
+  private readonly produtosService = inject(ProdutosService);
 
-  constructor(
-    private produtosService: ProdutosService,
-    private route: ActivatedRoute
-  ) { }
-
-  ngOnInit(): void {
-    const produtos = this.produtosService.getAll();
-
-    this.route.queryParamMap.subscribe(params => {
-      const descricao = params.get("descricao")?.toLowerCase();
-
-      if (descricao) {
-        this.produtos = produtos.filter(produtos => produtos.descricao.toLowerCase().includes(descricao));
-        return;
-      }
-
-      this.produtos = produtos;
-    });
-  }
-
+  readonly descricao = input<string>();
+  readonly produtos = computed(() => this.produtosService.buscar(this.descricao()));
 }

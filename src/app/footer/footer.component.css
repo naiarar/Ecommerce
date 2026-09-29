@@ -1,13 +1,15 @@
 .footer {
     background-color: var(--light-gray);
-    color: var(--gray);
+    color: var(--dark-gray);
     font-size: 18px;
+    line-height: 1.4;
 }
 
 .footer__container {
     display: flex;
     justify-content: space-evenly;
     flex-flow: row wrap;
+    gap: 20px;
     padding: 20px;
 }
 
@@ -17,7 +19,11 @@
     background-color: var(--light-gray-2);
     font-weight: bold;
     padding: 20px;
-    color: var(--gray);
+    color: var(--dark-gray);
+}
+
+.footer__copyright a {
+    color: var(--blue);
 }
 
 .footer__title {
@@ -27,11 +33,10 @@
     margin-bottom: 5px;
 }
 
-.footer__about-text {
-    width: 400px;
+.footer__about {
+    max-width: 400px;
     text-align: justify;
 }
-
 
 .footer i {
     color: var(--orange);

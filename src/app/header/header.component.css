@@ -8,7 +8,7 @@ li {
     flex-flow: row wrap;
     justify-content: space-between;
     align-items: center;
-    column-gap: 40px;
+    gap: 20px 40px;
 }
 
 .main-header__title {
@@ -16,24 +16,29 @@ li {
     letter-spacing: -1.5px;
 }
 
+.main-header__title a {
+    text-decoration: none;
+}
+
 .main-header__title--blue {
     color: var(--blue);
-    color: blue;
     font-size: 60px;
 }
 
 .main-header__title--orange {
     color: var(--orange);
-    color: orange;
     font-size: 60px;
 }
 
 .main-header__menu ul {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
+    row-gap: 10px;
 }
 
 .main-header__menu a {
+    display: inline-block;
     padding: 10px 10px;
     color: var(--gray);
     font-weight: 400;
@@ -42,7 +47,8 @@ li {
     transition: all .3s ease-in-out;
 }
 
-.main-header__menu a:hover {
+.main-header__menu a:hover,
+.main-header__menu a.ativo {
     background-color: var(--blue);
     color: #fff;
 }
@@ -52,6 +58,7 @@ li {
     flex-direction: column;
     row-gap: 20px;
     flex: 1;
+    min-width: 280px;
 }
 
 .badge-carrinho {
@@ -61,29 +68,43 @@ li {
     color: white;
 }
 
-
 .search-form {
-    height: 44px;
     display: flex;
 }
 
 .search-form input {
     box-sizing: border-box;
     height: 56px;
-    padding: 28px;
+    padding: 0 20px;
     flex: 1;
+    min-width: 0;
     background-color: var(--light-gray);
-    color: var(--gray);
+    color: var(--dark-gray);
     border: none;
-    transition: all -3s ease-in-out;
     font-size: 22px;
 }
 
 .search-form button {
     width: 56px;
     height: 56px;
-    background-color: var(--blue, blue);
+    background-color: var(--blue);
     border: none;
     color: #fff;
     font-size: 22px;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .main-header__title--blue,
+    .main-header__title--orange {
+        font-size: 44px;
+    }
+
+    .main-header__menu ul {
+        justify-content: flex-start;
+    }
+
+    .main-header__menu a {
+        font-size: 18px;
+    }
 }

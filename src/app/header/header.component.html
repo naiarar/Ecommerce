@@ -1,33 +1,37 @@
 <header class="main-header">
     <h1 class="main-header__title">
-        <span class="main-header__title--blue">E</span>
-        <span class="main-header__title--orange">commerce</span>
+        <a routerLink="/produtos" aria-label="Ecommerce - página inicial">
+            <span class="main-header__title--blue">E</span>
+            <span class="main-header__title--orange">commerce</span>
+        </a>
     </h1>
-    <div class="container">
-        <nav class="main-header__menu">
+    <div class="container-menu">
+        <nav class="main-header__menu" aria-label="Menu principal">
             <ul>
                 <li>
-                    <a routerLink="/produtos">Produtos</a>
+                    <a routerLink="/produtos" routerLinkActive="ativo">Produtos</a>
                 </li>
                 <li>
-                    <a routerLink="/carrinho">
-                        <i class="fa-solid fa-cart-shopping"></i>
+                    <a routerLink="/carrinho" routerLinkActive="ativo">
+                        <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
                         Carrinho
-                        <span class="badge-carrinho">{{ carrinhoService.obtemCarrinho().length }}</span>
+                        <span class="badge-carrinho" aria-label="itens no carrinho">{{ carrinhoService.quantidadeItens() }}</span>
                     </a>
                 </li>
                 <li>
-                    <a routerLink="/contato">Contato</a>
+                    <a routerLink="/contato" routerLinkActive="ativo">Contato</a>
                 </li>
-                <li><a><i class="fa-brands fa-facebook"></i></a></li>
-                <li><a><i class="fa-brands fa-instagram"></i></a></li>
-                <li><a><i class="fa-brands fa-twitter"></i></a></li>
+                <li>
+                    <a href="https://github.com/naiarar/Ecommerce" target="_blank" rel="noopener noreferrer"
+                        aria-label="Repositório no GitHub">
+                        <i class="fa-brands fa-github" aria-hidden="true"></i>
+                    </a>
+                </li>
             </ul>
         </nav>
-        <br>
-        <form class="search-form">
-            <input type="text" name="descricao">
-            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <form class="search-form" role="search" (ngSubmit)="buscar(busca.value)">
+            <input #busca type="search" name="descricao" placeholder="Buscar produtos" aria-label="Buscar produtos">
+            <button type="submit" aria-label="Buscar"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
         </form>
     </div>
 </header>

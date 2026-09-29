@@ -1,42 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+
 import { CarrinhoService } from '../carrinho.service';
-import { IProdutoCarrinho } from '../produtos';
+import { NotificacaoService } from '../notificacao.service';
 
 @Component({
   selector: 'app-carrinho',
+  imports: [CurrencyPipe, RouterLink],
   templateUrl: './carrinho.component.html',
   styleUrls: ['./carrinho.component.css']
 })
-export class CarrinhoComponent implements OnInit {
-  itensCarrinho: IProdutoCarrinho[] = [];
-  total = 0;
+export class CarrinhoComponent {
+  private readonly router = inject(Router);
+  private readonly notificacaoService = inject(NotificacaoService);
+  readonly carrinhoService = inject(CarrinhoService);
 
-
-  constructor(
-    public carrinhoService: CarrinhoService,
-    private router: Router
-
-  ) { }
-
-  ngOnInit(): void {
-    this.itensCarrinho = this.carrinhoService.obtemCarrinho();
-    this.calculaTotal();
-  }
-
-  calculaTotal() {
-    this.total = this.itensCarrinho.reduce((prev, curr) => prev + (curr.preco * curr.quantidade), 0);
+  alterarQuantidade(produtoId: number, campo: HTMLInputElement) {
+    const quantidade = this.carrinhoService.atualizarQuantidade(produtoId, campo.valueAsNumber);
+    campo.value = String(quantidade);
   }
 
   removeProdutoCarrinho(produtoId: number) {
-    this.itensCarrinho = this.itensCarrinho.filter(item => item.id !== produtoId);
     this.carrinhoService.removerProdutoCarrinho(produtoId);
-    this.calculaTotal();
-  }
-  comprar() {
-    alert("Parabéns você adquiriu os melhores produtos de informática!");
-    this.carrinhoService.limparCarrinho();
-    this.router.navigate(["produtos"]);
   }
 
+  comprar() {
+    this.carrinhoService.limparCarrinho();
+    this.notificacaoService.notificar('Parabéns! Você adquiriu os melhores produtos de informática!');
+    this.router.navigate(['/produtos']);
+  }
 }

@@ -1,23 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { FooterComponent } from './footer.component';
 
 describe('FooterComponent', () => {
-  let component: FooterComponent;
-  let fixture: ComponentFixture<FooterComponent>;
+  it('exibe o ano atual no copyright', async () => {
+    await TestBed.configureTestingModule({ imports: [FooterComponent] }).compileComponents();
+    const fixture = TestBed.createComponent(FooterComponent);
+    await fixture.whenStable();
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ FooterComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(FooterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    const copyright = (fixture.nativeElement as HTMLElement).querySelector('.footer__copyright');
+    expect(copyright?.textContent).toContain(String(new Date().getFullYear()));
   });
 });
